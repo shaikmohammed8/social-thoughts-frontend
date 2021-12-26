@@ -162,7 +162,24 @@ class SearchScreen extends GetView<MainController> {
                                   return child;
                               },
                             ),
-                      child: Container(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Wrap(children: [
+                          Text(
+                            'suggestions',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline1
+                                .copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    color: Colors.grey.shade400),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          SizedBox(height: 170, child: suggetsUsers())
+                        ]),
+                      ),
                     ),
                     postValuebuilder(),
                   ],
@@ -255,6 +272,71 @@ class SearchScreen extends GetView<MainController> {
     }
     var isRetweeted = retweets.any((element) => element == id);
     return isRetweeted;
+  }
+
+  FutureBuilder<List<User>> suggetsUsers() {
+    return FutureBuilder<List<User>>(
+        future: UserReposiotry().searchUsers('user'),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(
+              padding: EdgeInsets.only(top: 8),
+              alignment: Alignment.topCenter,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            );
+          }
+          if (snapshot.hasData) {
+            return ListView.builder(
+              shrinkWrap: true, //just set this property
+              itemCount: snapshot.data.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (a, index) => Container(
+                  padding: EdgeInsets.all(8),
+                  margin: EdgeInsets.symmetric(horizontal: 5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      width: 1.5,
+                      color: Theme.of(context).dividerColor,
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      CircleAvatar(
+                        radius: 30,
+                        backgroundImage:
+                            NetworkImage(snapshot.data[index].profilePic),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        snapshot.data[index].name,
+                        style: Theme.of(context).textTheme.subtitle2,
+                      ),
+                      TextButton(
+                          style: ElevatedButton.styleFrom(
+                              minimumSize: Size(100, 30),
+                              onPrimary: Theme.of(context).primaryColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(30)),
+                              side: BorderSide(
+                                  color: Theme.of(context).primaryColor)),
+                          onPressed: () {
+                            Get.toNamed('profile',
+                                arguments: snapshot.data[index].id);
+                          },
+                          child: Text("go to profile"))
+                    ],
+                  )),
+            );
+          } else
+            return Container(
+              height: 200,
+            );
+        });
   }
 }
 

@@ -262,7 +262,7 @@ class PostWeidget extends GetView<MainController> {
         androidUiSettings: AndroidUiSettings(
             toolbarTitle: 'Crop your photo',
             toolbarColor: Theme.of(Get.context).primaryColor,
-            toolbarWidgetColor: Theme.of(Get.context).accentColor,
+            toolbarWidgetColor: Colors.white,
             initAspectRatio: CropAspectRatioPreset.ratio16x9,
             hideBottomControls: true,
             lockAspectRatio: true),
@@ -304,7 +304,7 @@ class PostWeidget extends GetView<MainController> {
 class customPaint extends CustomPainter {
   customPaint({this.progress, this.color});
   double progress = 0.0;
-  Color color = Colors.black;
+  Color color;
   @override
   void paint(Canvas canvas, Size size) {
     Rect rect = Rect.fromLTWH(0.0, 0.0, size.width, size.height);
@@ -315,7 +315,7 @@ class customPaint extends CustomPainter {
         6.3,
         false,
         Paint()
-          ..color = Colors.black
+          ..color = Colors.black26
           ..strokeWidth = 2.0
           ..style = PaintingStyle.stroke);
 

@@ -137,8 +137,10 @@ class MessageScreen extends GetView<MessageController> {
                             ? null
                             : () {
                                 var uniqueid = uuid.v1();
-                                controller.Listkey.currentState.insertItem(0,
-                                    duration: Duration(milliseconds: 200));
+                                if (controller.Listkey.currentState != null) {
+                                  controller.Listkey.currentState.insertItem(0,
+                                      duration: Duration(milliseconds: 200));
+                                }
                                 var message = Message(
                                     uuid: uniqueid,
                                     updatedAt: DateTime.now(),
@@ -320,6 +322,10 @@ class MessageScreen extends GetView<MessageController> {
           source: ImageSource.gallery, maxHeight: 400, maxWidth: 600);
       if (image != null) {
         var uniqueid = uuid.v1();
+        if (controller.Listkey.currentState != null) {
+          controller.Listkey.currentState
+              .insertItem(0, duration: Duration(milliseconds: 200));
+        }
         var message = Message(
             uuid: uniqueid,
             updatedAt: DateTime.now(),
@@ -328,8 +334,10 @@ class MessageScreen extends GetView<MessageController> {
             photo: 'nophoto');
         controller.messages.insert(0, message);
         getChatId(context, message);
+        print("asdfasdfasdf");
         var upload =
             await cloud.uploadFile(filePath: image.path, folder: 'messages');
+        print("asdfasdfasdfaaaaaaaaaaa");
         if (upload.error == null) {
           messgaeRepo.uploadMessage(
               Message(uuid: uniqueid, photo: upload.url),
@@ -339,7 +347,11 @@ class MessageScreen extends GetView<MessageController> {
         }
       }
     } catch (e) {
-      print(e);
+      Get.snackbar(
+        'error',
+        e,
+        backgroundColor: Colors.white,
+      );
     }
   }
 

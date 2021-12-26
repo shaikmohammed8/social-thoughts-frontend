@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 showdialog() {}
 
@@ -40,7 +41,7 @@ Container error(BuildContext context, Function fun) {
             children: [
               IconButton(
                 icon: Icon(
-                  Icons.refresh_rounded,
+                  Iconsax.refresh,
                   color: Theme.of(context).primaryColor,
                 ),
                 onPressed: fun,

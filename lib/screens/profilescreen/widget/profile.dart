@@ -29,7 +29,7 @@ class ProfileBuild extends StatefulWidget {
 class _ProfileBuildState extends State<ProfileBuild> {
   var postRepo = PostRepository();
   var controller = Get.find<MainController>();
-  bool isWaiting = true;
+  bool isWaiting = false;
   var id;
   List<Tweet> tweets = <Tweet>[];
 
